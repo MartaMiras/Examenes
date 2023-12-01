@@ -1,10 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import axios from "axios";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  const API = "https://my-json-server.typicode.com/typicode/demo/posts";
+
+  const getData = async () => {
+    try{
+      const res = await axios.get(API);
+    console.log(res.data, "get");}
+    catch(error){
+      console.error(error.message);
+    }
+  };
+
+  const postData = async () => {
+    try{
+      const res = await axios.post(API, {
+      id: 7,
+      tittle: "Título del 7",
+    });
+    console.log(res.data, "post");
+    }
+    catch(error){
+      console.error(error.message);
+    } 
+  };
+
+  const updateData = async() => {
+    try{
+      const res = await axios.put(`${API}/2`, {
+      title:"Nuevo título",
+    })
+    console.log(res.data,"update");
+    }
+    catch(error){
+      console.error(error.message);
+    }
+  };
+
+  const deleteData = async()=>{
+    try{
+      const res = await axios.delete(`${API}/3`);
+    console.log(res.data, "delete");
+    }
+    catch(error){
+      console.error(error.message)
+    }    
+  };
+
+  useEffect(() => {
+    getData();
+    postData();
+    updateData();
+    deleteData();
+  });
 
   return (
     <>
@@ -29,7 +83,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
